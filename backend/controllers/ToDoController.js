@@ -29,12 +29,22 @@ module.exports.updateToDo = async (req, res) => {
 }
 
 module.exports.deleteToDo = async (req, res) => {
-    
+
     const {_id} = req.body;
+
+    if (!_id) {
+        return res.status(400).json({
+          message: "ID is required to delete the Todo item",
+        });
+      }
+
     ToDoModel
     .findByIdAndDelete(_id)
     .then(() => {
-        res.send("Todo deleted successfully");
+        res.status(200).json({
+            message: "Todo deleted successfully",
+            id: _id,
+          });
     })
     .catch((err) => {
         console.log(err);
